@@ -1,138 +1,152 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>批量插入行</title>
 
     <!-- Office JavaScript API -->
-    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script
+      type="text/javascript"
+      src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"
+    ></script>
 
     <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
-    <link rel="stylesheet" href="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-core/11.1.0/css/fabric.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-core/11.1.0/css/fabric.min.css"
+    />
 
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background-color: #fff;
-        }
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+          "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+        background-color: #fff;
+      }
 
-        .dialog-container {
-            max-width: 400px;
-            margin: 0 auto;
-        }
+      .dialog-container {
+        max-width: 400px;
+        margin: 0 auto;
+      }
 
-        h2 {
-            color: #323130;
-            font-size: 24px;
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
+      h2 {
+        color: #323130;
+        font-size: 24px;
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+      .form-group {
+        margin-bottom: 20px;
+      }
 
-        label {
-            display: block;
-            color: #323130;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+      label {
+        display: block;
+        color: #323130;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
 
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #c8c6c4;
-            border-radius: 2px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
+      input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #c8c6c4;
+        border-radius: 2px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
 
-        input[type="number"]:focus {
-            outline: none;
-            border-color: #0078d4;
-            box-shadow: 0 0 0 1px #0078d4;
-        }
+      input[type="number"]:focus {
+        outline: none;
+        border-color: #0078d4;
+        box-shadow: 0 0 0 1px #0078d4;
+      }
 
-        .button-group {
-            display: flex;
-            gap: 8px;
-            margin-top: 30px;
-        }
+      .button-group {
+        display: flex;
+        gap: 8px;
+        margin-top: 30px;
+      }
 
-        button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 2px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+      button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 2px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
 
-        .btn-primary {
-            background-color: #0078d4;
-            color: white;
-        }
+      .btn-primary {
+        background-color: #0078d4;
+        color: white;
+      }
 
-        .btn-primary:hover {
-            background-color: #005a9e;
-        }
+      .btn-primary:hover {
+        background-color: #005a9e;
+      }
 
-        .btn-primary:active {
-            background-color: #004578;
-        }
+      .btn-primary:active {
+        background-color: #004578;
+      }
 
-        .btn-secondary {
-            background-color: #f3f2f1;
-            color: #323130;
-            border: 1px solid #c8c6c4;
-        }
+      .btn-secondary {
+        background-color: #f3f2f1;
+        color: #323130;
+        border: 1px solid #c8c6c4;
+      }
 
-        .btn-secondary:hover {
-            background-color: #edebe9;
-        }
+      .btn-secondary:hover {
+        background-color: #edebe9;
+      }
 
-        .error-message {
-            color: #a4373a;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
+      .error-message {
+        color: #a4373a;
+        font-size: 12px;
+        margin-top: 4px;
+        display: none;
+      }
 
-        .success-message {
-            color: #107c10;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
+      .success-message {
+        color: #107c10;
+        font-size: 12px;
+        margin-top: 4px;
+        display: none;
+      }
     </style>
-<script defer src="polyfill.js"></script><script defer src="insertRowsDialog.js"></script></head>
+  <script defer src="polyfill.js"></script><script defer src="insertRowsDialog.js"></script></head>
 
-<body>
+  <body>
     <div class="dialog-container">
-        <h2>批量插入行</h2>
-        <form id="insertRowsForm">
-            <div class="form-group">
-                <label for="rowCount">输入要插入的行数:</label>
-                <input type="number" id="rowCount" name="rowCount" min="1" max="1000" value="1" required>
-                <div class="error-message" id="errorMessage"></div>
-            </div>
-            <div class="button-group">
-                <button type="submit" class="btn-primary">插入</button>
-                <button type="button" class="btn-secondary" onclick="closeDialog()">取消</button>
-            </div>
-        </form>
+      <h2>批量插入行</h2>
+      <form id="insertRowsForm">
+        <div class="form-group">
+          <label for="rowCount">输入要插入的行数:</label>
+          <input
+            type="number"
+            id="rowCount"
+            name="rowCount"
+            min="1"
+            max="1000"
+            value="1"
+            required
+          />
+          <div class="error-message" id="errorMessage"></div>
+        </div>
+        <div class="button-group">
+          <button type="submit" class="btn-primary">插入</button>
+          <button type="button" class="btn-secondary" onclick="closeDialog()">取消</button>
+        </div>
+      </form>
     </div>
 
     <script src="c18a2314a54a00f5e7f6.js"></script>
-</body>
-
+  </body>
 </html>
