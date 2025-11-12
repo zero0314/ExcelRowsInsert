@@ -57,7 +57,7 @@ async function insertRows(event) {
 
       await context.sync();
 
-      // Close the task pane
+      // Close the dialog
       closeDialog();
     });
   } catch (error) {
@@ -69,5 +69,5 @@ async function insertRows(event) {
 }
 
 function closeDialog() {
-  Office.context.ui.taskPaneRequest.completed();
+  Office.context.ui.messageParent("close");
 }

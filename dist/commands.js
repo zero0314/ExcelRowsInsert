@@ -32,8 +32,32 @@ function action(event) {
   event.completed();
 }
 
-// Register the function with Office.
+/**
+ * Shows the insert rows dialog
+ * @param event {Office.AddinCommands.Event}
+ */
+function showInsertRowsDialog(event) {
+  var dialogUrl = new URL("https://localhost:3000/insert-rows-dialog.html");
+  Office.context.ui.displayDialogAsync(dialogUrl.toString(), {
+    height: 30,
+    width: 40,
+    displayInIframe: true
+  }, function (asyncResult) {
+    if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+      console.error("Dialog failed to open: " + asyncResult.error.message);
+    } else {
+      var dialog = asyncResult.value;
+      dialog.addEventHandler(Office.EventType.DialogMessageReceived, function (messageEvent) {
+        dialog.close();
+      });
+    }
+    event.completed();
+  });
+}
+
+// Register the functions with Office.
 Office.actions.associate("action", action);
+Office.actions.associate("showInsertRowsDialog", showInsertRowsDialog);
 /******/ })()
 ;
 //# sourceMappingURL=commands.js.map

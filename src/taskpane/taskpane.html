@@ -1,55 +1,167 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
-<!-- This file shows how to design a first-run page that provides a welcome screen to the user about the features of the add-in. -->
+<!-- This file shows how to design a task pane with batch insert rows functionality. -->
 
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contoso Task Pane Add-in</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Excel 批量插入</title>
 
     <!-- Office JavaScript API -->
-    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script
+      type="text/javascript"
+      src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"
+    ></script>
 
     <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
-    <link rel="stylesheet" href="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-core/11.1.0/css/fabric.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-core/11.1.0/css/fabric.min.css"
+    />
 
     <!-- Template styles -->
     <link href="taskpane.css" rel="stylesheet" type="text/css" />
-</head>
 
-<body class="ms-font-m ms-welcome ms-Fabric">
-    <header class="ms-welcome__header ms-bgColor-neutralLighter">
-        <img width="90" height="90" src="../../assets/logo-filled.png" alt="Contoso" title="Contoso" />
-        <h1 class="ms-font-su">Welcome</h1>
-    </header>
-    <section id="sideload-msg" class="ms-welcome__main">
-        <h2 class="ms-font-xl">Please <a target="_blank" href="https://learn.microsoft.com/office/dev/add-ins/testing/test-debug-office-add-ins#sideload-an-office-add-in-for-testing">sideload</a> your add-in to see app body.</h2>
-    </section>
-    <main id="app-body" class="ms-welcome__main" style="display: none;">
-        <h2 class="ms-font-xl"> Discover what Office Add-ins can do for you today! </h2>
-        <ul class="ms-List ms-welcome__features">
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Ribbon ms-font-xl"></i>
-                <span class="ms-font-m">Achieve more with Office integration</span>
-            </li>
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Unlock ms-font-xl"></i>
-                <span class="ms-font-m">Unlock features and functionality</span>
-            </li>
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Design ms-font-xl"></i>
-                <span class="ms-font-m">Create and visualize like a pro</span>
-            </li>
-        </ul>
-        <p class="ms-font-l">Modify the source files, then click <b>Run</b>.</p>
-        <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
-            <span class="ms-Button-label">Run</span>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+          "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      h2 {
+        color: #323130;
+        font-size: 18px;
+        margin: 0 0 20px 0;
+        border-bottom: 2px solid #0078d4;
+        padding-bottom: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        color: #323130;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #c8c6c4;
+        border-radius: 2px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      input[type="number"]:focus {
+        outline: none;
+        border-color: #0078d4;
+        box-shadow: 0 0 0 1px #0078d4;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 8px;
+        margin-top: 20px;
+      }
+
+      button {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 2px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .btn-primary {
+        background-color: #0078d4;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #005a9e;
+      }
+
+      .btn-primary:active {
+        background-color: #004578;
+      }
+
+      .message {
+        padding: 10px;
+        border-radius: 2px;
+        margin-top: 15px;
+        font-size: 13px;
+        display: none;
+      }
+
+      .error-message {
+        background-color: #fde7e9;
+        color: #a4373a;
+        border: 1px solid #f1707f;
+        display: block;
+      }
+
+      .success-message {
+        background-color: #dffcf0;
+        color: #107c10;
+        border: 1px solid #7cdb7f;
+        display: block;
+      }
+
+      .info-text {
+        font-size: 12px;
+        color: #605e5c;
+        margin-top: 10px;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+
+  <body class="ms-font-m ms-Fabric">
+    <div class="container">
+      <h2>批量插入行</h2>
+
+      <div class="info-text">
+        选择要插入行的位置，然后输入要插入的行数。新行将在选中行的下方插入。
+      </div>
+
+      <form id="insertRowsForm">
+        <div class="form-group">
+          <label for="rowCount">输入要插入的行数:</label>
+          <input
+            type="number"
+            id="rowCount"
+            name="rowCount"
+            min="1"
+            max="1000"
+            value="1"
+            required
+          />
         </div>
-        <p><label id="item-subject"></label></p>
-    </main>
-</body>
+        <div class="button-group">
+          <button type="submit" class="btn-primary">插入行</button>
+        </div>
+      </form>
 
+      <div id="messageBox" class="message"></div>
+    </div>
+
+    <script src="taskpane.js"></script>
+  </body>
 </html>

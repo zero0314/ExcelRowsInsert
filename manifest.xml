@@ -57,26 +57,6 @@
               </Group>
             </OfficeTab>
           </ExtensionPoint>
-          <ExtensionPoint xsi:type="ContextMenus">
-            <OfficeMenu id="ContextMenuCell">
-              <Control xsi:type="Button" id="InsertRowsButton">
-                <Label resid="InsertRowsButton.Label"/>
-                <Supertip>
-                  <Title resid="InsertRowsButton.Label"/>
-                  <Description resid="InsertRowsButton.Tooltip"/>
-                </Supertip>
-                <Icon>
-                  <bt:Image size="16" resid="Icon.16x16"/>
-                  <bt:Image size="32" resid="Icon.32x32"/>
-                  <bt:Image size="80" resid="Icon.80x80"/>
-                </Icon>
-                <Action xsi:type="ShowTaskpane">
-                  <TaskpaneId>InsertRowsPane</TaskpaneId>
-                  <SourceLocation resid="InsertRowsDialog.Url"/>
-                </Action>
-              </Control>
-            </OfficeMenu>
-          </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
     </Hosts>
@@ -90,18 +70,15 @@
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
         <bt:Url id="Commands.Url" DefaultValue="https://localhost:3000/commands.html"/>
         <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
-        <bt:Url id="InsertRowsDialog.Url" DefaultValue="https://localhost:3000/insert-rows-dialog.html"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="Get started with your sample add-in!"/>
         <bt:String id="CommandsGroup.Label" DefaultValue="Commands Group"/>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="Show Task Pane"/>
-        <bt:String id="InsertRowsButton.Label" DefaultValue="Batch Insert Rows"/>
+        <bt:String id="TaskpaneButton.Label" DefaultValue="批量插入行"/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="GetStarted.Description" DefaultValue="Your sample add-in loaded successfully. Go to the HOME tab and click the 'Show Task Pane' button to get started."/>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Show a Taskpane"/>
-        <bt:String id="InsertRowsButton.Tooltip" DefaultValue="Right-click on a cell and select this option to insert multiple rows"/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="点击打开批量插入行的任务窗格"/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

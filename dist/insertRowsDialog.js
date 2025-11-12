@@ -8,7 +8,7 @@
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
-module.exports = __webpack_require__.p + "c18a2314a54a00f5e7f6.js";
+module.exports = __webpack_require__.p + "0db57cbfacda6be205c3.js";
 
 /***/ })
 
@@ -191,7 +191,7 @@ function _insertRows() {
                     _context.n = 2;
                     return context.sync();
                   case 2:
-                    // Close the task pane
+                    // Close the dialog
                     closeDialog();
                   case 3:
                     return _context.a(2);
@@ -220,7 +220,7 @@ function _insertRows() {
   return _insertRows.apply(this, arguments);
 }
 function closeDialog() {
-  Office.context.ui.taskPaneRequest.completed();
+  Office.context.ui.messageParent("close");
 }
 }();
 // This entry needs to be wrapped in an IIFE because it needs to be in strict mode.

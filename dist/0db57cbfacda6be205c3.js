@@ -63,7 +63,7 @@ function _insertRows() {
                     _context.n = 2;
                     return context.sync();
                   case 2:
-                    // Close the task pane
+                    // Close the dialog
                     closeDialog();
                   case 3:
                     return _context.a(2);
@@ -92,5 +92,5 @@ function _insertRows() {
   return _insertRows.apply(this, arguments);
 }
 function closeDialog() {
-  Office.context.ui.taskPaneRequest.completed();
+  Office.context.ui.messageParent("close");
 }
